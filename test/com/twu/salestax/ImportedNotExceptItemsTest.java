@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 
 public class ImportedNotExceptItemsTest {
     @Test
-    public void shouldCalculateTotalForImportedNotExcepetItems() {
+    public void shouldCalculateTotalForImportedNotExceptItems() {
         ImportedNotExceptItems importedNotExceptItems = new ImportedNotExceptItems();
 
         double actualPrice = importedNotExceptItems.calculatePrice(47.50);
