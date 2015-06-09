@@ -11,5 +11,9 @@ public class InputHandler {
     public String read() {
         return inputScanner.nextLine();
     }
+
+    public int readInt() {
+        return inputScanner.nextInt();
+    }
 }
 
