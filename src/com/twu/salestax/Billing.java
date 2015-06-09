@@ -9,7 +9,7 @@ public class Billing {
     private InputHandler inputHandler;
     private OutputHandler outputHander;
     private ArrayList<String> inputValues;
-    private String bill;
+    private String bill = "";
     private double totalSalesTax = 0.0;
     private double total = 0.0;
 
@@ -40,27 +40,26 @@ public class Billing {
             if(inputValues.get(i) != null) {
                 String type = "";
                 String splittedItem[] = inputValues.get(i).split(" ");
-
-                if (splittedItem.length > 2) {
-                    int j;
-                    for (j = 1; j < (splittedItem.length - 1); j++) {
-                        if (items.typeOf(splittedItem[j]).equals("imported")) {
-                            type += "imported_";
-                        }
-                        if (!items.typeOf(splittedItem[j]).equals("other")) {
-                            type += splittedItem[j];
-                        }
+                String outputItem = "";
+                int j;
+                for (j = 1; j < (splittedItem.length - 1); j++) {
+                    if (splittedItem[j].equals("imported")) {
+                        type += "imported_";
                     }
-                    double originalPrice = Double.parseDouble(splittedItem[j]);
-
-                    double priceOfItem = calculatePriceHash.get(type).calculatePrice(originalPrice);
-
-                    totalSalesTax += (priceOfItem - originalPrice);
-
-                    total += priceOfItem;
-
-                    bill += (priceOfItem + "\n");
+                    if (!items.typeOf(splittedItem[j]).equals("other")) {
+                        type += items.typeOf(splittedItem[j]);
+                    }
+                    outputItem += (splittedItem[j] + " ");
                 }
+                double originalPrice = Double.parseDouble(splittedItem[j]);
+
+                double priceOfItem = calculatePriceHash.get(type).calculatePrice(originalPrice);
+
+                totalSalesTax += (priceOfItem - originalPrice);
+
+                total += priceOfItem;
+
+                bill += (outputItem + ":" +priceOfItem + "\n");
             }
         }
         bill += ("Sales Tax:" + totalSalesTax + "\n");
@@ -77,7 +76,7 @@ public class Billing {
         hashMap.put("imported_food", new ImportedExceptItems());
         hashMap.put("imported_book", new ImportedExceptItems());
         hashMap.put("imported_CD", new ImportedNotExceptItems());
-        hashMap.put("importedpills", new ImportedExceptItems());
+        hashMap.put("imported_pills", new ImportedExceptItems());
         hashMap.put("imported_perfume", new ImportedNotExceptItems());
         hashMap.put("food", new NonImportedExceptItems());
         hashMap.put("book", new NonImportedExceptItems());
@@ -89,13 +88,14 @@ public class Billing {
         HashMap<String, ArrayList<String>> typeAndItems = new HashMap<>();
         ArrayList<String> food = new ArrayList<>();
         food.add("chocolates");
+        food.add("chocolate");
         typeAndItems.put("food", food);
         ArrayList<String> books = new ArrayList<>();
         books.add("book");
         typeAndItems.put("book", books);
         ArrayList<String> cds = new ArrayList<>();
         cds.add("CD");
-        typeAndItems.put("cd", cds);
+        typeAndItems.put("CD", cds);
         ArrayList<String> pills = new ArrayList<>();
         pills.add("pills");
         typeAndItems.put("pills", pills);
